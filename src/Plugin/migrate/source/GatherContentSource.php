@@ -235,6 +235,11 @@ class GatherContentSource extends SourcePluginBase {
 
     // Retrieve the items from GatherContent.
     $items = $this->retrieveItems($this->project_id);
+    // Status is very helpful for inclusion/exclusion filters.
+    $items = array_map(function ($item) {
+      $item->status_name = $item->status['data']['name'];
+      return $item;
+    }, $items);
     // Remove items based on template_id or other filters.
     $items = array_filter($items, $this->getItemsFilter());
     // Clean array keys.
@@ -286,7 +291,6 @@ class GatherContentSource extends SourcePluginBase {
     }
 
     $row->setSourceProperty('fields', $field_values);
-    $row->setSourceProperty('status', $item->status['data']['name']);
     $row->setSourceProperty('expanded', TRUE);
   }
 
