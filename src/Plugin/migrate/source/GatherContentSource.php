@@ -279,6 +279,9 @@ class GatherContentSource extends SourcePluginBase {
       elseif (strpos($field->type, 'choice_') === 0) {
         // Flatten multiple choice values.
         $value = array_filter(array_map(function($opt) { return $opt['selected'] ? $opt['label'] : NULL; }, $field->options));
+        if (isset($value[0])) {
+          $value = $value[0];
+        }
       }
 
       // Provide IDs as field names for stability.
