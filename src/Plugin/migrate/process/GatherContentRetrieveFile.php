@@ -41,6 +41,10 @@ class GatherContentRetrieveFile extends ProcessPluginBase {
     $replace_arg = isset($this->configuration['replace']) ? $this->configuration['replace'] : 'IGNORE';
     $replace = ['FILE_EXISTS_ERROR' => FILE_EXISTS_ERROR, 'FILE_EXISTS_RENAME' => FILE_EXISTS_RENAME, 'FILE_EXISTS_REPLACE' => FILE_EXISTS_REPLACE, 'IGNORE' => 'IGNORE'][$replace_arg];
 
+    // Create the directory, if it doesn't exist.
+    $directory = "{$scheme}{$path}/";
+    file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
+
     // Save the file.
     $file = system_retrieve_file($value, "{$scheme}{$path}/{$filename}", TRUE, $replace);
     $message = 'Failed to retrieve file "'. $value . '""';
