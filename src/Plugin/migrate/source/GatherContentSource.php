@@ -265,7 +265,8 @@ class GatherContentSource extends SourcePluginBase {
     // Flatten field values.
     $field_values = [];
     foreach ($fields as $field) {
-      $value = $field->value;
+      // Zero-width non-breaking spaces were causing empty values to not really be empty.
+      $value = preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $field->value);
 
       if ($field->type == 'files') {
         // Match files to the field in which they appear.
